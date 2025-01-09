@@ -50,7 +50,7 @@ def ejecutar_sql(sql_text, params=None):
         return {"error": str(e)}, 500
 
 
-@app.route('empleado/empleados', methods=['GET'])
+@app.route('/empleado/empleados', methods=['GET'])
 def obtener_lista_empleados():
     query = 'SELECT * FROM public."Empleado" ORDER BY id ASC LIMIT 100'
     resultado = ejecutar_sql(query)
@@ -59,7 +59,7 @@ def obtener_lista_empleados():
     return jsonify(resultado)
 
 
-@app.route('gestor/login', methods=['POST'])
+@app.route('/gestor/login', methods=['POST'])
 def login(user, passwd):
     body_request = request.json
     user = body_request["user"]
@@ -80,63 +80,63 @@ def login(user, passwd):
         }
     )
 
-@app.route('/proyecto/crear')
-def crear_proyecto():
-
-@app.route("/")
-def asignar_proyecto_existente():
-
-@app.route("/")
-def asignar_cliente_a_proyecto():
-
-@app.route("/")
-def crear_tareas_proyecto():
-
-@app.route("/")
-def asignar_programador_a_proyecto(): #Tener en cuenta que el programador puede tener distinto precio a la hora
-
-
-@app.route("/")
-def asignar_programador_a_tarea():
-
-@app.route("/")
-def calcular_horas_proyecto(): #definida en tareas
-
-@app.route("/")
-def añadir_extras_proyecto(): #artículos como: dominio, servidor, licencias, etc. (Tener en cuenta que cada artículo está asignado a un proveedor)
-
-@app.route("/")
-def calcular_presupuesto(): #contando las horas y con los datos de la empresa y del cliente.
-
-
-@app.route('/proyecto/proyectos', methods=['GET'])
-def obtener_proyectos():
-
-
-
-    return jsonify(
-        {
-            "id": proyecto.json[0]["id"],
-            "nombre": proyecto.json[0]["nombre"],
-            "descripcion": proyecto.json[0]["descripcion"],
-            "fecha_creacion": proyecto.json[0]["fecha_creacion"],
-            "fecha_inicio": proyecto.json[0]["fecha_inicio"],
-            "fecha_finalizacion": proyecto.json[0]["fecha_finalizacion"],
-            "cliente": proyecto.json[0]["cliente"],
-        }
-    )
-
-
-@app.route('/proyecto/proyectos_activos', methods=['GET'])
-def proyectos_activos():
-
-
-
-
-@app.route('/proyecto/proyectos_gestor', methods=['GET'])
-def obtener_proyectos_gestor_id():
-
-
+# @app.route('/proyecto/crear')
+# def crear_proyecto():
+#
+# @app.route("/")
+# def asignar_proyecto_existente():
+#
+# @app.route("/")
+# def asignar_cliente_a_proyecto():
+#
+# @app.route("/")
+# def crear_tareas_proyecto():
+#
+# @app.route("/")
+# def asignar_programador_a_proyecto(): #Tener en cuenta que el programador puede tener distinto precio a la hora
+#
+#
+# @app.route("/")
+# def asignar_programador_a_tarea():
+#
+# @app.route("/")
+# def calcular_horas_proyecto(): #definida en tareas
+#
+# @app.route("/")
+# def añadir_extras_proyecto(): #artículos como: dominio, servidor, licencias, etc. (Tener en cuenta que cada artículo está asignado a un proveedor)
+#
+# @app.route("/")
+# def calcular_presupuesto(): #contando las horas y con los datos de la empresa y del cliente.
+#
+#
+# @app.route('/proyecto/proyectos', methods=['GET'])
+# def obtener_proyectos():
+#
+#
+#
+#     return jsonify(
+#         {
+#             "id": proyecto.json[0]["id"],
+#             "nombre": proyecto.json[0]["nombre"],
+#             "descripcion": proyecto.json[0]["descripcion"],
+#             "fecha_creacion": proyecto.json[0]["fecha_creacion"],
+#             "fecha_inicio": proyecto.json[0]["fecha_inicio"],
+#             "fecha_finalizacion": proyecto.json[0]["fecha_finalizacion"],
+#             "cliente": proyecto.json[0]["cliente"],
+#         }
+#     )
+#
+#
+# @app.route('/proyecto/proyectos_activos', methods=['GET'])
+# def proyectos_activos():
+#
+#
+#
+#
+# @app.route('/proyecto/proyectos_gestor', methods=['GET'])
+# def obtener_proyectos_gestor_id():
+#
+#
 
 
 
