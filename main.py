@@ -59,26 +59,54 @@ def obtener_lista_empleados():
     return jsonify(resultado)
 
 
-
-@app.route('/proyecto/crear')
-def crear_proyecto():
-
-
-
-
-
-
-
-
-
 @app.route('gestor/login', methods=['POST'])
 def login(user, passwd):
     body_request = request.json
     user = body_request["user"]
     passwd = body_request["passwd"]
 
+    is_logged = ejecutar_sql(f" Select * from public.\"Gestor\" WHERE usuario = '{user}' and passwd = '{passwd}';")
+
+    if len(is_logged) == 0:
+        return jsonify({"msg": "login error"})
+    empleado = ejecutar_sql(f" Select * from public.\"Empleado\" WHERE id = '{is_logged.json[0]["empleado"]}';")
+
+    return jsonify(
+        {
+            "id_empleado": empleado.json[0]["id"],
+            "id_gestor": is_logged.json[0]["id"],
+            "nombre": empleado.json[0]["nombre"],
+            "email": empleado.json[0]["email"],
+        }
+    )
+
+@app.route('/proyecto/crear')
+def crear_proyecto():
+
+@app.route("/")
+def asignar_proyecto_existente():
+
+@app.route("/")
+def asignar_cliente_a_proyecto():
+
+@app.route("/")
+def crear_tareas_proyecto():
+
+@app.route("/")
+def asignar_programador_a_proyecto(): #Tener en cuenta que el programador puede tener distinto precio a la hora
 
 
+@app.route("/")
+def asignar_programador_a_tarea():
+
+@app.route("/")
+def calcular_horas_proyecto(): #definida en tareas
+
+@app.route("/")
+def añadir_extras_proyecto(): #artículos como: dominio, servidor, licencias, etc. (Tener en cuenta que cada artículo está asignado a un proveedor)
+
+@app.route("/")
+def calcular_presupuesto(): #contando las horas y con los datos de la empresa y del cliente.
 
 
 @app.route('/proyecto/proyectos', methods=['GET'])
@@ -86,7 +114,17 @@ def obtener_proyectos():
 
 
 
-
+    return jsonify(
+        {
+            "id": proyecto.json[0]["id"],
+            "nombre": proyecto.json[0]["nombre"],
+            "descripcion": proyecto.json[0]["descripcion"],
+            "fecha_creacion": proyecto.json[0]["fecha_creacion"],
+            "fecha_inicio": proyecto.json[0]["fecha_inicio"],
+            "fecha_finalizacion": proyecto.json[0]["fecha_finalizacion"],
+            "cliente": proyecto.json[0]["cliente"],
+        }
+    )
 
 
 @app.route('/proyecto/proyectos_activos', methods=['GET'])
