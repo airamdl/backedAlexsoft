@@ -160,9 +160,18 @@ def crear_tareas_proyecto():
 # def asignar_programador_a_proyecto(): #Tener en cuenta que el programador puede tener distinto precio a la hora
 #
 #
-# @app.route("/")
-# def asignar_programador_a_tarea():
-#
+@app.route("/tarea/programador")
+def asignar_programador_a_tarea():
+    body_request = request.json
+    id_tarea = body_request["id"]
+    id_programador = body_request["id_programador"]
+
+    ejecutar_sql(
+        f"UPDATE public.\"Tarea\" SET programador = '{id_programador}' WHERE id = '{id_tarea}';"
+    )
+
+    return jsonify({"msg": "Se asigno correctamente el programador a la tarea"})
+
 # @app.route("/")
 # def calcular_horas_proyecto(): #definida en tareas
 #
