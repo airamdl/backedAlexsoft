@@ -65,10 +65,10 @@ def obtener_programadores():
 
 @app.route('/tarea/obtener_tareas', methods=['GET'])
 def obtener_tareas():
-    body_request = request.json
-    proyecto = body_request["proyecto"]
+    id_proyecto = request.args.get('id_proyecto')
 
-    resultado = ejecutar_sql(f"Select * from public.\"Tarea\" WHERE proyecto = {proyecto};")
+
+    resultado = ejecutar_sql(f"Select * from public.\"Tarea\" WHERE proyecto = {id_proyecto};")
     return jsonify(resultado)
 
 @app.route('/proyecto/proyectos_activos', methods=['GET'])
