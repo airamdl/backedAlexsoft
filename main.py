@@ -58,6 +58,35 @@ def obtener_lista_empleados():
         return jsonify(resultado[0]), resultado[1]
     return jsonify(resultado)
 
+@app.route('/programador/programadores', methods=['GET'])
+def obtener_programadores():
+    resultado = ejecutar_sql(f"Select * from public.\"Programador\";")
+    return jsonify(resultado)
+
+@app.route('/tarea/obtener_tareas', methods=['GET'])
+def obtener_tareas():
+    body_request = request.json
+    proyecto = body_request["proyecto"]
+
+    resultado = ejecutar_sql(f"Select * from public.\"Tarea\" WHERE proyecto = {proyecto};")
+    return jsonify(resultado)
+
+@app.route('/proyecto/proyectos_activos', methods=['GET'])
+def proyectos_activos():
+    #resultado = ejecutar_sql(f"Select * from public.\"Proyecto\" where fecha_finalizacion > current_date ORDER BY fecha_finalizacion ASC;")
+    proyecto = ejecutar_sql(f"Select * from public.\"Proyecto\" where fecha_finalizacion is null ORDER BY fecha_creacion ASC;")
+
+    # resultado = {
+    #     "id": proyecto[0]["id"],
+    #     "nombre": proyecto[0]["nombre"],
+    #     "descripcion": proyecto[0]["descripcion"],
+    #     "fecha_creacion": proyecto[0]["fecha_creacion"],
+    #     "fecha_inicio": proyecto[0]["fecha_inicio"],
+    #     "cliente": proyecto[0]["cliente"]
+    # }
+    if isinstance(proyecto, tuple):
+        return jsonify(proyecto[0]), proyecto[1]
+    return jsonify(proyecto)
 
 @app.route('/gestor/login', methods=['POST'])
 def login():
@@ -120,8 +149,6 @@ def asignar_gestor_proyecto():
     return jsonify({"msg": "se insertó correctamente"})
 
 
-# @app.route("/")
-# def asignar_proyecto_existente():
 
 
 @app.route("/proyecto/cliente", methods=['POST'])
@@ -144,7 +171,7 @@ def crear_tareas_proyecto():
     nombre = body_request["nombre"]
     descripcion = body_request["descripcion"]
     estimacion = body_request["estimacion"]
-    fecha_creacion = body_request["fecha_creacion"]
+    fecha_creacion = body_request["fecha_creacion"] #Hacer mas tarde automatico con fecha actual
     fecha_finalizacion = body_request["fecha_finalizacion"]
     programador = body_request["programador"]
     proyecto = body_request["proyecto"]
@@ -156,11 +183,20 @@ def crear_tareas_proyecto():
 
     return jsonify({"msg": "Se asigno correctamente la tarea"})
 
-# @app.route("/")
-# def asignar_programador_a_proyecto(): #Tener en cuenta que el programador puede tener distinto precio a la hora
-#
-#
-@app.route("/tarea/programador")
+@app.route("/proyecto/asignar_programador", methods=['POST'])
+def asignar_programador_a_proyecto(): #Tener en cuenta que el programador puede tener distinto precio a la hora
+    body_request = request.json
+    id_proyecto = body_request["id_proyecto"]
+    id_programador = body_request["id_programador"]
+
+
+    ejecutar_sql(
+        f"Insert into  public.\"ProgramadoresProyecto\" VALUES ('{id_programador}', {id_proyecto}, current_date);;"
+    )
+
+    return jsonify({"msg": "Se asigno correctamente la tarea"})
+
+@app.route("/tarea/programador", methods=['POST'])
 def asignar_programador_a_tarea():
     body_request = request.json
     id_tarea = body_request["id"]
@@ -172,44 +208,7 @@ def asignar_programador_a_tarea():
 
     return jsonify({"msg": "Se asigno correctamente el programador a la tarea"})
 
-# @app.route("/")
-# def calcular_horas_proyecto(): #definida en tareas
-#
-# @app.route("/")
-# def añadir_extras_proyecto(): #artículos como: dominio, servidor, licencias, etc. (Tener en cuenta que cada artículo está asignado a un proveedor)
-#
-# @app.route("/")
-# def calcular_presupuesto(): #contando las horas y con los datos de la empresa y del cliente.
-#
-#
-# @app.route('/proyecto/proyectos', methods=['GET'])
-# def obtener_proyectos():
-#
-#
-#
-#     return jsonify(
-#         {
-#             "id": proyecto.json[0]["id"],
-#             "nombre": proyecto.json[0]["nombre"],
-#             "descripcion": proyecto.json[0]["descripcion"],
-#             "fecha_creacion": proyecto.json[0]["fecha_creacion"],
-#             "fecha_inicio": proyecto.json[0]["fecha_inicio"],
-#             "fecha_finalizacion": proyecto.json[0]["fecha_finalizacion"],
-#             "cliente": proyecto.json[0]["cliente"],
-#         }
-#     )
-#
-#
-# @app.route('/proyecto/proyectos_activos', methods=['GET'])
-# def proyectos_activos():
-#
-#
-#
-#
-# @app.route('/proyecto/proyectos_gestor', methods=['GET'])
-# def obtener_proyectos_gestor_id():
-#
-#
+
 
 
 if __name__ == '__main__':
